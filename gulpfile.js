@@ -8,7 +8,7 @@ let browsersync = require("browser-sync").create();
 let rename = require("gulp-rename");
 let newer = require("gulp-newer");
 //HTML plagins
-let kit = require("gulp-kit-2");
+let fileinclude = require("gulp-file-include");
 //CSS plagins
 let autoprefixer = require("gulp-autoprefixer");
 let cssbeautify = require("gulp-cssbeautify");
@@ -40,7 +40,7 @@ let path = {
 	},
 	src: {
 		favicon: src_folder + "/img/favicon.{jpg,png,svg,gif,ico,webp}",
-		html: src_folder + "/index.kit",
+		html: [src_folder + "/*.html", "!" + src_folder + "/_*.html"],
 		js: [src_folder + "/js/app.js", src_folder + "/js/vendors.js"],
 		css: src_folder + "/scss/style.scss",
 		images: [src_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}", "!**/favicon.*"],
@@ -69,7 +69,7 @@ function browserSync(done) {
 function html() {
 	return src(path.src.html, { base: "src/" })
 		.pipe(plumber())
-		.pipe(kit())
+		.pipe(fileinclude())
 		.pipe(dest(path.build.html))
 		.pipe(browsersync.stream());
 }
